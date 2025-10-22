@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ControleDeFuncionarios.Entities;
+using ControleDeFuncionarios.Enumerations;
+using ControleDeFuncionarios.Repositories;
 using ControleDeFuncionarios.Service;
 
 namespace ControleDeFuncionarios.Controllers
@@ -35,8 +37,15 @@ namespace ControleDeFuncionarios.Controllers
                 funcionario.DataAdimissao = DateTime.Parse(Console.ReadLine() ?? string.Empty);
                 Console.Write("SALÁRIO.............: ");
                 funcionario.Salario = Decimal.Parse(Console.ReadLine() ?? string.Empty);
+                Console.WriteLine("\nCARGOS:");
+                foreach (var cargo in Enum.GetValues(typeof(Cargo))) 
+                {
+                    Console.WriteLine($"{(int)cargo} - {cargo}");
+                }
+                Console.Write("\nINFORME O NUMERO DO CARGO:");
+                funcionario.Cargo = (Cargo) int.Parse(Console.ReadLine() ?? string.Empty);
 
-                Console.Write("INFORME O CPE...........: ");
+                Console.Write("INFORME O CEP...........: ");
                 var cep = Console.ReadLine() ?? string.Empty;
 
                 //Criando um objeto da classe de serviço
@@ -61,6 +70,12 @@ namespace ControleDeFuncionarios.Controllers
 
                 Console.Write("\nINFORME O NÚMERO DO ENDEREÇO: ");
                 funcionario.Endereco.Numero = Console.ReadLine() ?? string.Empty;
+
+                //Enviando para o banco de dados (repositório)
+                var funcionarioRepository = new FuncionarioRepository();
+                funcionarioRepository.Inserir(funcionario);
+
+                Console.WriteLine($"\n Funcionário {funcionario.Nome} cadastrado com sucesso!");
 
             }
             catch (Exception e)

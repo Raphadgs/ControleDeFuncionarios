@@ -16,6 +16,6 @@ namespace ControleDeFuncionarios.Enumerations
         Operador = 3,
         Coordenador = 4,
         Gerente = 5,
-        Diretor = 6
+        Diretor = 6,
     }
 }
